@@ -1,3 +1,5 @@
-\.pvm
-\.vscode
-./pvm
+.pvm/
+.vscode/
+
+*.o
+pvm
