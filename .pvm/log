@@ -4,3 +4,7 @@ commit 1752075347
     added README
 commit 1752075803
     added a .pvmignore
+commit 1752076472
+    fixed major stupidity where pvm doesn't save files in directories recursively
+commit 1752076851
+    compression

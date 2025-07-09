@@ -1,9 +1,14 @@
+.PHONY: all clean
+
+all: pvm
+
 CC=gcc
 CFLAGS=-Wall -Wextra -std=c99 -Isrc/headers
+LDFLAGS=-lz
 OBJS=main.o src/commands/util.o src/commands/init.o src/commands/save.o src/commands/commit.o src/commands/branch.o src/commands/history.o
 
 pvm: $(OBJS)
-	$(CC) $(CFLAGS) -o pvm $(OBJS)
+	$(CC) $(CFLAGS) -o $@ $(OBJS) $(LDFLAGS)
 
 main.o: main.c src/headers/init.h src/headers/save.h src/headers/commit.h src/headers/branch.h src/headers/history.h
 src/commands/util.o: src/commands/util.c src/headers/util.h

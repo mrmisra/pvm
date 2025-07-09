@@ -21,6 +21,8 @@ int main(int argc, char *argv[]) {
         return pvm_branch(argc, argv);
     } else if (strcmp(argv[1], "history") == 0) {
         return pvm_history(argc, argv);
+    } else if (strcmp(argv[1], "index") == 0 && argc > 2 && strcmp(argv[2], "--git") == 0) {
+        return pvm_index_git();
     } else {
         printf("Unknown command: %s\n", argv[1]);
         return 1;

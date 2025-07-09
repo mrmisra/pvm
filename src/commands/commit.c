@@ -2,8 +2,26 @@
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
+#include <zlib.h>
 #include "commit.h"
 #include "util.h"
+
+static int compress_file(const char *src, const char *dst) {
+    FILE *in = fopen(src, "rb");
+    if (!in) return -1;
+    gzFile out = gzopen(dst, "wb");
+    if (!out) { fclose(in); return -1; }
+    char buf[4096];
+    int bytes;
+    while ((bytes = fread(buf, 1, sizeof(buf), in)) > 0) {
+        if (gzwrite(out, buf, bytes) != bytes) {
+            fclose(in); gzclose(out); return -1;
+        }
+    }
+    fclose(in);
+    gzclose(out);
+    return 0;
+}
 
 int pvm_commit(int argc, char *argv[]) {
     if (!dir_exists(".pvm")) {
@@ -26,9 +44,13 @@ int pvm_commit(int argc, char *argv[]) {
     char file[256];
     while (fgets(file, sizeof(file), index)) {
         file[strcspn(file, "\n")] = 0;
-        char cmd[512];
-        snprintf(cmd, sizeof(cmd), "cp %s %s/", file, commit_dir);
-        system(cmd);
+        char dst[512];
+        snprintf(dst, sizeof(dst), "%s/%s.gz", commit_dir, strrchr(file, '/') ? strrchr(file, '/')+1 : file);
+        if (compress_file(file, dst) == 0) {
+            printf("Compressed and saved %s\n", file);
+        } else {
+            printf("Failed to compress %s\n", file);
+        }
     }
     fclose(index);
     remove(".pvm/index");
