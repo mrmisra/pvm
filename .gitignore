@@ -1,5 +1,4 @@
-.pvm/
-.vscode/
-
-*.o
-pvm
+.pvm/    # ignore the directory
+pvm      # ignore the binary
+.vscode/ # already fine
+*.o      # ignore object files
