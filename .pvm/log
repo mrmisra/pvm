@@ -8,3 +8,5 @@ commit 1752076472
     fixed major stupidity where pvm doesn't save files in directories recursively
 commit 1752076851
     compression
+commit 1752077674
+    added documentation
